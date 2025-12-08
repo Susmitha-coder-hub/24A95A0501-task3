@@ -1,0 +1,8 @@
+PolicyID,CustomerName,PlanType,Premium,Notes
+101,"Lakshmi Susmitha","Health Basic",3500,"No claims yet"
+102,"Ravi Kumar","Health Plus",5200,"Customer said: ""I need full coverage."""
+103,"Meena Reddy","Life Standard",7800,"Address updated on 12/10/2024"
+104,"John Doe","Travel",1200,"Includes baggage insurance, flight delay compensation"
+105,"Priya Sharma","Health Premium",6400,"Previous issues:
+- Card not working
+- Claim delayed"
