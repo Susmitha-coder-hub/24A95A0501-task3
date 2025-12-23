@@ -1,17 +1,34 @@
-# test.py
-from custom_csv_reader import CustomCsvReader
+from custom_csv import CustomCsvReader
+
+def load_records(file_path):
+    with open(file_path, "r", encoding="utf-8") as f:
+        reader = CustomCsvReader(f)
+        rows = list(reader)
+
+    headers = rows[0]
+    return [dict(zip(headers, row)) for row in rows[1:]]
 
 def main():
-    print("---- LLM STYLE RETRIEVAL ----")
-    reader = CustomCsvReader("insurance_data.csv")
+    records = load_records("insurance_data.csv")
 
+    print("---- SEARCH MODE ----")
     while True:
-        query = input("Ask your question (or type 'exit' to quit): ").strip()
-        if query.lower() in ["exit", "quit"]:
-            print("Exiting.")
+        query = input("Ask your question (or 'exit'): ").strip().lower()
+        if query == "exit":
             break
-        result = reader.retrieve_information(query)
-        print("\n" + result + "\n")
+
+        results = []
+        for row in records:
+            if query in " ".join(row.values()).lower():
+                results.append(row)
+
+        if not results:
+            print("No results found.\n")
+            continue
+
+        for r in results:
+            print(r)
+        print()
 
 if __name__ == "__main__":
     main()
