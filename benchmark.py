@@ -1,44 +1,28 @@
 import time
-import json
-from custom_csv_reader import CustomCsvReader
-from custom_csv_writer import CustomCsvWriter
+from custom_csv import CustomCsvReader, CustomCsvWriter
 
-# File paths
 read_file = "insurance_data.csv"
 write_file = "benchmark_output.csv"
 
-# Initialize reader
-reader = CustomCsvReader(read_file)
+# ---- Benchmark Reading ----
+start = time.time()
+with open(read_file, "r", encoding="utf-8") as f:
+    reader = CustomCsvReader(f)
+    _ = list(reader)
+read_time = time.time() - start
 
-# --- BENCHMARK READING PERFORMANCE ---
-start_time = time.time()
-_ = reader.load_data()
-read_time = time.time() - start_time
-
-# --- BENCHMARK WRITING PERFORMANCE ---
-rows_to_write = [
+# ---- Benchmark Writing ----
+rows = [
     ["PolicyID", "CustomerName", "PlanType", "Premium", "Notes"],
-    ["201", "Test User", "Test Plan", "9999", "Benchmark writing test"]
+    ["201", "Test User", "Test Plan", "9999", "Benchmark test"]
 ]
 
-start_time = time.time()
+start = time.time()
 with open(write_file, "w", encoding="utf-8", newline="") as f:
     writer = CustomCsvWriter(f)
-    writer.writerows(rows_to_write)
-write_time = time.time() - start_time
+    writer.writerows(rows)
+write_time = time.time() - start
 
-# --- SHOW RESULTS IN TERMINAL ---
 print("---- CSV BENCHMARK RESULTS ----")
-print(f"Read Speed  : {read_time:.6f} seconds")
-print(f"Write Speed : {write_time:.6f} seconds")
-
-# --- SAVE RESULTS TO JSON FILE ---
-results = {
-    "read_time_seconds": read_time,
-    "write_time_seconds": write_time
-}
-
-with open("benchmark_results.json", "w", encoding="utf-8") as json_file:
-    json.dump(results, json_file, indent=4)
-
-print("\nBenchmark results saved to benchmark_results.json")
+print(f"Read Time : {read_time:.6f} sec")
+print(f"Write Time: {write_time:.6f} sec")
